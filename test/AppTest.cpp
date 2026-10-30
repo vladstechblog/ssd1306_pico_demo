@@ -33,31 +33,23 @@ void gpio_pull_up(uint pin_number){
 
 TEST_GROUP(AppI2CSetup){
  
-  void recordI2CInitExpectations(void){
+  void recordI2CSetupExpectations(void){
     mock().expectOneCall("i2c_init")
       .withPointerParameter("i2c_address", fake_i2c_address)
       .withUnsignedIntParameter("baudrate", fake_baudrate)
       .andReturnValue(fake_baudrate);
-  }
 
-  void recordGPIOSetFunctionExpectationsForDataPin(void){
     mock().expectOneCall("gpio_set_function")
       .withUnsignedIntParameter("pin_number", I2C_SCA_PIN)
       .withIntParameter("pin_function", GPIO_FUNC_I2C);
-  }
 
-  void recordGPIOSetFunctionExpectationsForClockPin(void){
     mock().expectOneCall("gpio_set_function")
       .withUnsignedIntParameter("pin_number", I2C_CLK_PIN)
       .withIntParameter("pin_function", GPIO_FUNC_I2C);
-  }
 
-  void recordGPIOPullUpExpectationsForDataPin(void){
     mock().expectOneCall("gpio_pull_up")
       .withUnsignedIntParameter("pin_number", I2C_SCA_PIN);
-  }
 
-  void recordGPIOPullUpExpectationsForClockPin(void){
     mock().expectOneCall("gpio_pull_up")
       .withUnsignedIntParameter("pin_number", I2C_CLK_PIN);
   }
@@ -75,12 +67,6 @@ TEST_GROUP(AppI2CSetup){
 
 
 TEST(AppI2CSetup, initializei_default_I2C){
-  recordI2CInitExpectations();
-  recordGPIOSetFunctionExpectationsForDataPin();
-  recordGPIOSetFunctionExpectationsForClockPin();
-  recordGPIOPullUpExpectationsForDataPin();
-  recordGPIOPullUpExpectationsForClockPin();
+  recordI2CSetupExpectations();
   i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
 }
-
-
