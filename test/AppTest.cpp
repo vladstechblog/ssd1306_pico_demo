@@ -40,6 +40,12 @@ TEST_GROUP(App){
       .withIntParameter("pin_function", GPIO_FUNC_I2C);
   }
 
+  void recordGPIOSetFunctionExpectationsForClockPin(void){
+    mock().expectOneCall("gpio_set_function")
+      .withUnsignedIntParameter("pin_number", I2C_CLK_PIN)
+      .withIntParameter("pin_function", GPIO_FUNC_I2C);
+  }
+
 
   void setup(){
     //TODO
@@ -58,5 +64,6 @@ TEST_GROUP(App){
 TEST(App, initializei_default_I2C){
   recordI2CInitExpectations();
   recordGPIOSetFunctionExpectationsForDataPin();
+  recordGPIOSetFunctionExpectationsForClockPin();
   i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
 }
