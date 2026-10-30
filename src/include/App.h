@@ -6,6 +6,6 @@
 
 void app_main(void);
 void i2c_setup(i2c_inst_t*, uint, uint, uint);
-
+void initialize_display(i2c_inst_t*);
 
 #endif  /* D_FakeApp_H */

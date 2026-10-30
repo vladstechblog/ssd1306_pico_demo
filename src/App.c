@@ -1,6 +1,8 @@
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
+#include "SSD1306.h"
 #include "App.h"
+
 
 void i2c_setup(i2c_inst_t* i2c_address, uint baudrate, uint data_pin, uint clock_pin){
   i2c_init(i2c_address, baudrate);
@@ -8,6 +10,11 @@ void i2c_setup(i2c_inst_t* i2c_address, uint baudrate, uint data_pin, uint clock
   gpio_set_function(clock_pin, GPIO_FUNC_I2C);
   gpio_pull_up(data_pin);
   gpio_pull_up(clock_pin);
+}
+
+
+void initialize_display(i2c_inst_t* i2c_address){
+  SSD1306_Create(i2c_address);
 }
 
 void app_main(void){
