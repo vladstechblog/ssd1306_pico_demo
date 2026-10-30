@@ -1,6 +1,6 @@
-add_library(App STATIC App.c Util.c)
+add_library(App STATIC App.c)
 target_include_directories(App PUBLIC include)
-target_link_libraries(App PUBLIC pico_stdlib)
+target_link_libraries(App PUBLIC pico_stdlib ssd1306_pico)
 
 add_executable(demo main.c)
 target_include_directories(demo PUBLIC include)
