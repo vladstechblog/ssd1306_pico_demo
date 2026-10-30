@@ -17,6 +17,15 @@ void SSD1306_defaultInitialization(void){
 }
 
 
+void SSD1306_setAddressModeToHorizontal(void){
+  mock_c()->actualCall("SSD1306_setAddressModeToHorizontal");
+}
+
+void SSD1306_clearDisplayMemory(void){
+  mock_c()->actualCall("SSD1306_clearDisplayMemory");
+}
+
+
 
 } //end of extern "C"
 
@@ -38,6 +47,8 @@ TEST(Display, DisplayInitialization){
     .withPointerParameter("i2c_address", fake_i2c_address);
 
   mock().expectOneCall("SSD1306_defaultInitialization");
+  mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
+  mock().expectOneCall("SSD1306_clearDisplayMemory");
 
   initialize_display(fake_i2c_address);
 }
