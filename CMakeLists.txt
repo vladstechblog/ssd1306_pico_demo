@@ -15,5 +15,14 @@ endif()
 project(ssd1306_pico_demo C CXX ASM)
 pico_sdk_init()
 
+include(FetchContent)
+FetchContent_Declare(
+  ssd1306_pico
+  GIT_REPOSITORY https://github.com/vladstechblog/ssd1306_pico.git
+  GIT_TAG develop
+)
+
+FetchContent_MakeAvailable(ssd1306_pico)
+
 add_subdirectory(src)
 add_subdirectory(test EXCLUDE_FROM_ALL)
