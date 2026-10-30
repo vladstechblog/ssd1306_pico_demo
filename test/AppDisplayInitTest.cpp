@@ -34,6 +34,16 @@ void SSD1306_clearDisplayMemory(void){
 
 
 TEST_GROUP(Display){
+  
+  void recordDisplayInitializationExpectations(void){
+    mock().expectOneCall("SSD1306_Create")
+      .withPointerParameter("i2c_address", fake_i2c_address);
+    mock().expectOneCall("SSD1306_defaultInitialization");
+    mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
+    mock().expectOneCall("SSD1306_clearDisplayMemory");
+  }
+
+
   void setup(){}
   void teardown(){
     mock().checkExpectations();
@@ -43,13 +53,7 @@ TEST_GROUP(Display){
 
 
 TEST(Display, DisplayInitialization){
-  mock().expectOneCall("SSD1306_Create")
-    .withPointerParameter("i2c_address", fake_i2c_address);
-
-  mock().expectOneCall("SSD1306_defaultInitialization");
-  mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
-  mock().expectOneCall("SSD1306_clearDisplayMemory");
-
+  recordDisplayInitializationExpectations();
   initialize_display(fake_i2c_address);
 }
 
