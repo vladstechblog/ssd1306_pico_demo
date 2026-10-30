@@ -1,0 +1,11 @@
+#ifndef D_App_H
+#define D_App_H
+
+#define I2C_SCA_PIN 4
+#define I2C_CLK_PIN 5
+
+void app_main(void);
+void i2c_setup(i2c_inst_t*, uint, uint, uint);
+
+
+#endif  /* D_FakeApp_H */
