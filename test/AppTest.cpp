@@ -19,6 +19,12 @@ uint i2c_init(i2c_inst_t* i2c_address, uint baudrate){
 
 TEST_GROUP(App){
  
+  void recordI2CInitExpectations(void){
+    mock().expectOneCall("i2c_init")
+      .withPointerParameter("i2c_address", fake_i2c_address)
+      .withUnsignedIntParameter("baudrate", fake_baudrate)
+      .andReturnValue(fake_baudrate);
+  }
 
   void setup(){
     //TODO
@@ -28,14 +34,13 @@ TEST_GROUP(App){
     mock().checkExpectations();
     mock().clear();
   }
+
+
+
 };
 
 
 TEST(App, initializei_default_I2C){
-  mock().expectOneCall("i2c_init")
-    .withPointerParameter("i2c_address", fake_i2c_address)
-    .withUnsignedIntParameter("baudrate", fake_baudrate)
-    .andReturnValue(fake_baudrate);
-
+  recordI2CInitExpectations();
   i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
 }
