@@ -31,7 +31,7 @@ void gpio_pull_up(uint pin_number){
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
-TEST_GROUP(App){
+TEST_GROUP(AppI2CSetup){
  
   void recordI2CInitExpectations(void){
     mock().expectOneCall("i2c_init")
@@ -57,6 +57,10 @@ TEST_GROUP(App){
       .withUnsignedIntParameter("pin_number", I2C_SCA_PIN);
   }
 
+  void recordGPIOPullUpExpectationsForClockPin(void){
+    mock().expectOneCall("gpio_pull_up")
+      .withUnsignedIntParameter("pin_number", I2C_CLK_PIN);
+  }
 
   void setup(){
     //TODO
@@ -67,15 +71,16 @@ TEST_GROUP(App){
     mock().clear();
   }
 
-
-
 };
 
 
-TEST(App, initializei_default_I2C){
+TEST(AppI2CSetup, initializei_default_I2C){
   recordI2CInitExpectations();
   recordGPIOSetFunctionExpectationsForDataPin();
   recordGPIOSetFunctionExpectationsForClockPin();
   recordGPIOPullUpExpectationsForDataPin();
+  recordGPIOPullUpExpectationsForClockPin();
   i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
 }
+
+
