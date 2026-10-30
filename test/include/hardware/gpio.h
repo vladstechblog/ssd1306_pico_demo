@@ -9,7 +9,7 @@ typedef enum gpio_function_t {
 
 
 void gpio_set_function(uint gpio, gpio_function_t fn);
-
+void gpio_pull_up(uint gpio);
 
 
 

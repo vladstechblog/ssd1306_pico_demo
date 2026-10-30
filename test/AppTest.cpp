@@ -19,6 +19,12 @@ void gpio_set_function(uint pin_number, gpio_function_t function){
     ->withIntParameters("pin_function", function);
 }
 
+void gpio_pull_up(uint pin_number){
+  mock_c()->actualCall("gpio_pull_up")
+    ->withUnsignedIntParameters("pin_number", pin_number);
+}
+
+
 
 } //end of extern "C"
 
@@ -46,6 +52,11 @@ TEST_GROUP(App){
       .withIntParameter("pin_function", GPIO_FUNC_I2C);
   }
 
+  void recordGPIOPullUpExpectationsForDataPin(void){
+    mock().expectOneCall("gpio_pull_up")
+      .withUnsignedIntParameter("pin_number", I2C_SCA_PIN);
+  }
+
 
   void setup(){
     //TODO
@@ -65,5 +76,6 @@ TEST(App, initializei_default_I2C){
   recordI2CInitExpectations();
   recordGPIOSetFunctionExpectationsForDataPin();
   recordGPIOSetFunctionExpectationsForClockPin();
+  recordGPIOPullUpExpectationsForDataPin();
   i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
 }
