@@ -8,15 +8,15 @@ extern "C"
 TEST_GROUP(UptimePresenter)
 {
     void setup(){
-      UptimePresenter_Create();
     }
 
     void teardown(){
-       UptimePresenter_Destroy();
     }
 };
 
-TEST(UptimePresenter, Create){
-  FAIL("Start here");
+TEST(UptimePresenter, GetData){
+  unsigned char* data = UptimePresenter_GetData();
+  BYTES_EQUAL(0xff, data[0]);
 }
+
 
