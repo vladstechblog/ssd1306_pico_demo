@@ -14,6 +14,13 @@ TEST_GROUP(UptimePresenter)
       }
     }
 
+    void check_buffer_is_zeroed_out(){
+      unsigned char* data = UptimePresenter_GetData();
+      for (int i = 0; i < DATA_BUFFER_SIZE; i++){
+        BYTES_EQUAL(0, data[i]);
+      }
+    }
+
     void setup(){
     }
 
@@ -30,11 +37,10 @@ TEST(UptimePresenter, GetData){
 
 
 TEST(UptimePresenter, DestroyZeroesOutData){
-  unsigned char* data = UptimePresenter_GetData();
   fill_buffer_with_aa();
 
   UptimePresenter_Destroy();
-  for (int i = 0; i < DATA_BUFFER_SIZE; i++){
-    BYTES_EQUAL(0, data[i]);
-  }
+  check_buffer_is_zeroed_out();
 }
+
+
