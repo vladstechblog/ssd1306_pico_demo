@@ -132,3 +132,9 @@ TEST(FormatUptimeData, TestMapAscciToFontLowerCaseZ){
   check_mapped_ascii_value(expected, actual);
 }
 
+TEST(FormatUptimeData, TestMapUnsupportedCharMapsToSpace){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+  char unsupported_char = '"';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(unsupported_char);
+  check_mapped_ascii_value(expected, actual);
+}
