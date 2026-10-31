@@ -12,10 +12,6 @@ static void zero_out_data(void){
   }
 }
 
-void UptimePresenter_Create(void){
-  zero_out_data();
-}
-
 void UptimePresenter_Destroy(void){
   zero_out_data();
 }
@@ -61,4 +57,19 @@ void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fi
   
 
   snprintf(buffer_to_fill, TIMESTAMP_LENGTH, "%02dm %02ds", minutes, seconds);
+}
+
+
+void UptimePresenter_Create(void){
+  zero_out_data();
+
+  uint8_t uptime[] = "UPTIME";
+  size_t memset_limit = sizeof(uptime) * FONT_CHAR_SIZE;
+  
+  for(int char_index = 0; char_index < sizeof(uptime); char_index++){
+    char* font_letter_pointer = UptimePresenter_MapAsciiToFont(uptime[char_index]);
+    int data_buffer_index = char_index * FONT_CHAR_SIZE;
+
+    memcpy(data_buffer  + data_buffer_index, font_letter_pointer, FONT_CHAR_SIZE);
+  }
 }

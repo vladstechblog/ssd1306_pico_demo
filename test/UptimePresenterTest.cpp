@@ -24,6 +24,17 @@ TEST_GROUP(UptimePresenter)
       }
     }
 
+    void validate_uptime_font_bytes(unsigned char* expected, unsigned char* actual, size_t font_bytes_length){
+      //validate "UPTIME\0\0" string
+      for(int i = 0; i < font_bytes_length; i++){
+        BYTES_EQUAL(expected[i], actual[i]);
+      }
+      //validate nulls
+      for(int i = font_bytes_length; i < DATA_BUFFER_SIZE; i++){
+        BYTES_EQUAL(0, actual[i]);
+      }
+    }
+
     void setup(){
     }
 
@@ -45,11 +56,21 @@ TEST(UptimePresenter, DestroyZeroesOutData){
   check_buffer_is_zeroed_out();
 }
 
-TEST(UptimePresenter, CreateZeroesOutData){
-  fill_buffer_with_aa();
+TEST(UptimePresenter, CreateInitializesUptimeBuffer){
+  
+  unsigned char uptime_font_bytes[] = {
+    0x3f, 0x40, 0x40, 0x40, 0x40, 0x40, 0x3f, 0x00, //U
+    0x7f, 0x11, 0x11, 0x11, 0x11, 0x11, 0x0e, 0x00, //P
+    0x01, 0x01, 0x01, 0x7f, 0x01, 0x01, 0x01, 0x00, //T
+    0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00, //I
+    0x7f, 0x02, 0x04, 0x08, 0x04, 0x02, 0x7f, 0x00, //M
+    0x7f, 0x49, 0x49, 0x49, 0x49, 0x49, 0x49, 0x00, //E
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //0 first display line filler
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, //0 first display line filler
+  };
 
   UptimePresenter_Create();
-  check_buffer_is_zeroed_out();
+  validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
 }
 
 
