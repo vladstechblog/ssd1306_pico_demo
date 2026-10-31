@@ -36,3 +36,8 @@ TEST(UptimeFormat, Basic){
   validate_timestamp(expected, actual);
 }
 
+TEST(UptimeFormat, LargetstUptimeSupportedOnDisplay){
+  char expected[TIMESTAMP_LENGTH] = "99m 59s";
+  UptimePresenter_FormatTimestamp(UPTIME_MAX - 1, actual);
+  validate_timestamp(expected, actual);
+}
