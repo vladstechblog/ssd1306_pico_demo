@@ -9,6 +9,6 @@ void UptimePresenter_Create(void);
 void UptimePresenter_Destroy(void);
 unsigned char* UptimePresenter_GetData(void);
 uint8_t* UptimePresenter_MapAsciiToFont(char);
-void UptimePresenter_FormatTimestamp(int, char*);
+void UptimePresenter_FormatTimestamp(uint16_t, char*);
 
 #endif  /* D_UptimePresenter_H */

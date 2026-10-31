@@ -49,7 +49,7 @@ uint8_t* UptimePresenter_MapAsciiToFont(char char_to_map){
 }
 
 
-void UptimePresenter_FormatTimestamp(int uptime_seconds, char* buffer_to_fill){
+void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fill){
   int minutes = 0;
   int seconds = 0;
 
