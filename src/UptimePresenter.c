@@ -50,6 +50,9 @@ uint8_t* UptimePresenter_MapAsciiToFont(char char_to_map){
 
 
 void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fill){
+  if (uptime_seconds == UPTIME_MAX)
+    uptime_seconds = 0;
+
   int minutes = uptime_seconds / 60;
   int seconds = uptime_seconds % 60;
   

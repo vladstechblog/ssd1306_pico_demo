@@ -41,3 +41,17 @@ TEST(UptimeFormat, LargetstUptimeSupportedOnDisplay){
   UptimePresenter_FormatTimestamp(UPTIME_MAX - 1, actual);
   validate_timestamp(expected, actual);
 }
+
+TEST(UptimeFormat, ZeroTimeStamp){
+  char expected[TIMESTAMP_LENGTH] = "00m 00s";
+  UptimePresenter_FormatTimestamp(0, actual);
+  validate_timestamp(expected, actual);
+}
+
+TEST(UptimeFormat, MaxOverflowToZero){
+  char expected[TIMESTAMP_LENGTH] = "00m 00s";
+  UptimePresenter_FormatTimestamp(UPTIME_MAX, actual);
+  validate_timestamp(expected, actual);
+}
+
+
