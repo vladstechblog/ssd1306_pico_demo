@@ -12,6 +12,12 @@ TEST_GROUP(UptimeFormat)
 {
     char* actual = NULL;
 
+    void validate_timestamp(char* expected_values, char* actual_values){
+      for (int i = 0 ; i < TIMESTAMP_LENGTH; i++){
+        BYTES_EQUAL(expected_values[i], actual_values[i]);
+      }
+    }
+
     void setup(){
       actual = (char*) calloc(TIMESTAMP_LENGTH, sizeof(char));
       memset(actual, 0, TIMESTAMP_LENGTH);
@@ -24,12 +30,9 @@ TEST_GROUP(UptimeFormat)
     }
 };
 
-TEST(UptimeFormat, Fail){
+TEST(UptimeFormat, Basic){
   char expected[TIMESTAMP_LENGTH] = "00m 00s";
   UptimePresenter_FormatTimestamp(0, actual);
-
-  for (int i = 0 ; i < TIMESTAMP_LENGTH; i++){
-    BYTES_EQUAL(expected[i], actual[i]);
-  }
+  validate_timestamp(expected, actual);
 }
 
