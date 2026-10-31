@@ -7,6 +7,13 @@ extern "C"
 
 TEST_GROUP(UptimePresenter)
 {
+    void fill_buffer_with_aa(){
+      unsigned char* data = UptimePresenter_GetData();
+      for (int i = 0; i < DATA_BUFFER_SIZE ; i++){
+        data[i] = 0xaa;
+      }
+    }
+
     void setup(){
     }
 
@@ -24,9 +31,7 @@ TEST(UptimePresenter, GetData){
 
 TEST(UptimePresenter, DestroyZeroesOutData){
   unsigned char* data = UptimePresenter_GetData();
-  for (int i = 0; i < DATA_BUFFER_SIZE ; i++){
-    data[i] = 0xaa;
-  }
+  fill_buffer_with_aa();
 
   UptimePresenter_Destroy();
   for (int i = 0; i < DATA_BUFFER_SIZE; i++){
