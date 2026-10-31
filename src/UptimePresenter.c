@@ -73,3 +73,16 @@ void UptimePresenter_Create(void){
     memcpy(data_buffer  + data_buffer_index, font_letter_pointer, FONT_CHAR_SIZE);
   }
 }
+
+void UptimePresenter_UpdateUptime(uint16_t uptime_seconds){
+  char timestamp_buffer[TIMESTAMP_LENGTH];
+  UptimePresenter_FormatTimestamp(uptime_seconds, timestamp_buffer);
+  
+  int data_buffer_timestamp_offset = DISPLAY_LINE_BYTES;
+
+  for(int i = 0; i < TIMESTAMP_LENGTH; i++){
+    char* font_pointer = UptimePresenter_MapAsciiToFont(timestamp_buffer[i]);
+    int data_buffer_index = data_buffer_timestamp_offset + (i * FONT_CHAR_SIZE);
+    memcpy(&data_buffer[data_buffer_index], font_pointer, FONT_CHAR_SIZE); 
+  }
+}

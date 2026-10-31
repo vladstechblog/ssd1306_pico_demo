@@ -33,6 +33,12 @@ void check_rest_of_buffer_is_zero(unsigned char* actual, size_t start_index){
   }
 }
 
+void validate_timestamp_block(unsigned char* expected, unsigned char* actual, size_t start_index){
+  for(int i = 0; i < (TIMESTAMP_LENGTH * FONT_CHAR_SIZE); i++){
+    BYTES_EQUAL(expected[i], actual[start_index + i]);
+  }
+}
+
 
 TEST_GROUP(UptimePresenter)
 {
@@ -75,6 +81,35 @@ TEST(UptimePresenter, CreateInitializesUptimeBuffer){
   UptimePresenter_Create();
   validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
   check_rest_of_buffer_is_zero(UptimePresenter_GetData(), sizeof(uptime_font_bytes));
+}
+
+
+TEST_GROUP(UpdateTimeStampData){
+
+  void setup(){
+    UptimePresenter_Create();
+  }
+
+  void teardown(){
+    UptimePresenter_Destroy();
+  }
+};
+
+TEST(UpdateTimeStampData, Check6000seconds){
+  unsigned char expected_timestamp[] = {
+    0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
+    0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
+    0x7f, 0x02, 0x04, 0x08, 0x04, 0x02, 0x7f, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+
+    0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
+    0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
+    0x46, 0x49, 0x49, 0x49, 0x49, 0x30, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  };
+
+  UptimePresenter_UpdateUptime(6000);
+  validate_timestamp_block(expected_timestamp, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
 }
 
 
