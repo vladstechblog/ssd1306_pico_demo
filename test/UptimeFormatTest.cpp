@@ -54,4 +54,8 @@ TEST(UptimeFormat, MaxOverflowToZero){
   validate_timestamp(expected, actual);
 }
 
-
+TEST(UptimeFormat, UptimeTwiceTheMaxMinusOne){
+  char expected[TIMESTAMP_LENGTH] = "99m 59s";
+  UptimePresenter_FormatTimestamp(11999, actual);
+  validate_timestamp(expected, actual);
+}

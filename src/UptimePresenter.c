@@ -53,6 +53,9 @@ void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fi
   if (uptime_seconds == UPTIME_MAX)
     uptime_seconds = 0;
 
+  if(uptime_seconds > UPTIME_MAX)
+    uptime_seconds %= UPTIME_MAX;
+
   int minutes = uptime_seconds / 60;
   int seconds = uptime_seconds % 60;
   
