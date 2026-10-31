@@ -38,7 +38,6 @@ TEST(UptimePresenter, GetData){
   BYTES_EQUAL(expected, data[0]);
 }
 
-
 TEST(UptimePresenter, DestroyZeroesOutData){
   fill_buffer_with_aa();
 
@@ -65,10 +64,37 @@ TEST_GROUP(FormatUptimeData){
   }
 };
 
-TEST(FormatUptimeData, TestMapAscciToFont_J){
+TEST(FormatUptimeData, TestMapAscciToFontUpperCaseA){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x78, 0x14, 0x12, 0x11, 0x12, 0x14, 0x78, 0x00 };
+  char upper_case_a = 'A';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(upper_case_a);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
+TEST(FormatUptimeData, TestMapAscciToFontUpperCaseJ){
   uint8_t expected[FONT_CHAR_SIZE] = { 0x21, 0x41, 0x41, 0x3f, 0x01, 0x01, 0x01, 0x00 };
   char letter_J = 'J';
   uint8_t* actual = UptimePresenter_MapAsciiToFont(letter_J);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
+TEST(FormatUptimeData, TestMapAscciToFontUpperCaseZ){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x41, 0x61, 0x59, 0x45, 0x43, 0x41, 0x00, 0x00 };
+  char upper_case_z = 'Z';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(upper_case_z);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
+TEST(FormatUptimeData, TestMapAscciToFontNumberZero){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00 };
+  char number_zero = '0';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(number_zero);
   for(int i = 0; i < FONT_CHAR_SIZE; i++){
     BYTES_EQUAL(expected[i], actual[i]);
   }
@@ -83,6 +109,24 @@ TEST(FormatUptimeData, TestMapAscciToFontNumberSeven){
   }
 }
 
+TEST(FormatUptimeData, TestMapAscciToFontNumberNine){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x06, 0x09, 0x09, 0x09, 0x09, 0x09, 0x7f, 0x00 };
+  char number_nine = '9';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(number_nine);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
+TEST(FormatUptimeData, TestMapAscciToFontLowerCaseA){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x78, 0x14, 0x12, 0x11, 0x12, 0x14, 0x78, 0x00 };
+  char lower_case_a = 'a';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(lower_case_a);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
 TEST(FormatUptimeData, TestMapAscciToFontLowerCaseI){
   uint8_t expected[FONT_CHAR_SIZE] = { 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00 };
   char lower_case_i = 'i';
@@ -92,4 +136,11 @@ TEST(FormatUptimeData, TestMapAscciToFontLowerCaseI){
   }
 }
 
-
+TEST(FormatUptimeData, TestMapAscciToFontLowerCaseZ){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x41, 0x61, 0x59, 0x45, 0x43, 0x41, 0x00, 0x00 };
+  char lower_case_z = 'z';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(lower_case_z);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
