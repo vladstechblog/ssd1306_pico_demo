@@ -1,3 +1,6 @@
+#ifndef SSD1306_FONT_H
+#define SSD1306_FONT_H
+
 //from pico examples i2s/ssd1306_font.h
 //modified to fit the Uptime presenter purpose
 
@@ -45,3 +48,5 @@ static uint8_t font[][FONT_CHAR_SIZE] = {
 { 0x36, 0x49, 0x49, 0x49, 0x49, 0x49, 0x36, 0x00 },  //8
 { 0x06, 0x09, 0x09, 0x09, 0x09, 0x09, 0x7f, 0x00 },  //9
 };
+
+#endif
