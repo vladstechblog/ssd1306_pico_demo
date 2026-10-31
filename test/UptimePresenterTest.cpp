@@ -26,7 +26,7 @@ void validate_uptime_font_bytes(unsigned char* expected, unsigned char* actual, 
   }
 }
 
-void check_rest_of_buffer_is_zero(unsigned char* expected, unsigned char* actual, size_t start_index){
+void check_rest_of_buffer_is_zero(unsigned char* actual, size_t start_index){
   //validate nulls
   for(int i = start_index; i < DATA_BUFFER_SIZE; i++){
     BYTES_EQUAL(0, actual[i]);
@@ -74,7 +74,7 @@ TEST(UptimePresenter, DestroyZeroesOutData){
 TEST(UptimePresenter, CreateInitializesUptimeBuffer){
   UptimePresenter_Create();
   validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
-  check_rest_of_buffer_is_zero(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
+  check_rest_of_buffer_is_zero(UptimePresenter_GetData(), sizeof(uptime_font_bytes));
 }
 
 
