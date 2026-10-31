@@ -1,6 +1,9 @@
 extern "C"
 {
+
 #include "UptimePresenter.h"
+#include "ssd1306_font.h"
+
 }
 
 #include "CppUTest/TestHarness.h"
@@ -48,6 +51,27 @@ TEST(UptimePresenter, CreateZeroesOutData){
 
   UptimePresenter_Create();
   check_buffer_is_zeroed_out();
+}
+
+
+
+TEST_GROUP(FormatUptimeData){
+  void setup(){
+    UptimePresenter_Create();
+  }
+
+  void teardown(){
+    UptimePresenter_Destroy();
+  }
+};
+
+TEST(FormatUptimeData, TestMapAscciToFont_J){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x21, 0x41, 0x41, 0x3f, 0x01, 0x01, 0x01, 0x00 };
+  char letter_J = 'J';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(letter_J);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
 }
 
 

@@ -6,5 +6,7 @@
 void UptimePresenter_Create(void);
 void UptimePresenter_Destroy(void);
 unsigned char* UptimePresenter_GetData(void);
+uint8_t* UptimePresenter_MapAsciiToFont(char);
+
 
 #endif  /* D_UptimePresenter_H */

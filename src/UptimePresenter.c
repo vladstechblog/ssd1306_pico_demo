@@ -1,3 +1,5 @@
+#include <stdint.h>
+#include "ssd1306_font.h"
 #include "UptimePresenter.h"
 
 
@@ -19,4 +21,13 @@ void UptimePresenter_Destroy(void){
 
 unsigned char* UptimePresenter_GetData(void){
   return data_buffer;
+}
+
+
+uint8_t* UptimePresenter_MapAsciiToFont(char char_to_map){
+  int font_index = 0; 
+  if(char_to_map >= 'A' && char_to_map <= 'Z')
+     font_index = char_to_map - 0x40;
+
+  return font[font_index];
 }
