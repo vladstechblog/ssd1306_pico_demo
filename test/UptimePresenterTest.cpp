@@ -82,3 +82,14 @@ TEST(FormatUptimeData, TestMapAscciToFontNumberSeven){
     BYTES_EQUAL(expected[i], actual[i]);
   }
 }
+
+TEST(FormatUptimeData, TestMapAscciToFontLowerCaseI){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0x00 };
+  char lower_case_i = 'i';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(lower_case_i);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
+
+
