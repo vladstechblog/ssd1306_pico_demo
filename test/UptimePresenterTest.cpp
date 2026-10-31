@@ -74,4 +74,11 @@ TEST(FormatUptimeData, TestMapAscciToFont_J){
   }
 }
 
-
+TEST(FormatUptimeData, TestMapAscciToFontNumberSeven){
+  uint8_t expected[FONT_CHAR_SIZE] = { 0x01, 0x01, 0x01, 0x61, 0x31, 0x0d, 0x03, 0x00 };
+  char number_seven = '7';
+  uint8_t* actual = UptimePresenter_MapAsciiToFont(number_seven);
+  for(int i = 0; i < FONT_CHAR_SIZE; i++){
+    BYTES_EQUAL(expected[i], actual[i]);
+  }
+}
