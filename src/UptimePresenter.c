@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "ssd1306_font.h"
 #include "UptimePresenter.h"
 
@@ -45,4 +46,12 @@ static int  get_font_index(char char_to_map){
 
 uint8_t* UptimePresenter_MapAsciiToFont(char char_to_map){
   return font[get_font_index(char_to_map)];
+}
+
+
+void UptimePresenter_FormatTimestamp(int uptime_seconds, char* buffer_to_fill){
+  int minutes = 0;
+  int seconds = 0;
+
+  snprintf(buffer_to_fill, TIMESTAMP_LENGTH, "%02dm %02ds", minutes, seconds);
 }
