@@ -25,11 +25,15 @@ unsigned char* UptimePresenter_GetData(void){
 
 
 static int  get_font_index(char char_to_map){
-  int font_index = 0; 
+  int font_index = 0;
+  int font_base_offset = 0x40;
+  int ascii_number_offset = 0x2F;
+
   if(char_to_map >= 'A' && char_to_map <= 'Z')
-     font_index = char_to_map - 0x40;
+     font_index = char_to_map - font_base_offset;
+  
   if(char_to_map >= '0' && char_to_map <= '9')
-     font_index = char_to_map - 0x2F + ('Z' - 0x40);
+     font_index = (char_to_map - ascii_number_offset) + ('Z' - font_base_offset);
 
   return font_index;
 }
