@@ -43,4 +43,11 @@ TEST(UptimePresenter, DestroyZeroesOutData){
   check_buffer_is_zeroed_out();
 }
 
+TEST(UptimePresenter, CreateZeroesOutData){
+  fill_buffer_with_aa();
+
+  UptimePresenter_Create();
+  check_buffer_is_zeroed_out();
+}
+
 

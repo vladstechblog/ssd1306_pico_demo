@@ -10,7 +10,7 @@ static void zero_out_data(void){
 }
 
 void UptimePresenter_Create(void){
-
+  zero_out_data();
 }
 
 void UptimePresenter_Destroy(void){
