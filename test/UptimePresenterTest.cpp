@@ -39,6 +39,12 @@ void validate_timestamp_block(unsigned char* expected, unsigned char* actual, si
   }
 }
 
+void validate_full_data_buffer(unsigned char* expected_timestamp, int null_byte_offset){
+  validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
+  validate_timestamp_block(expected_timestamp, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
+  check_rest_of_buffer_is_zero(UptimePresenter_GetData(), null_byte_offset);
+}
+
 
 TEST_GROUP(UptimePresenter)
 {
@@ -95,13 +101,6 @@ TEST_GROUP(UpdateTimeStampData){
   }
 };
 
-
-void validate_full_data_buffer(unsigned char* expected_timestamp, int null_byte_offset){
-  validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
-  validate_timestamp_block(expected_timestamp, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
-  check_rest_of_buffer_is_zero(UptimePresenter_GetData(), null_byte_offset);
-}
-
 TEST(UpdateTimeStampData, Check6000seconds){
   unsigned char expected_timestamp[] = {
     0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
@@ -121,6 +120,24 @@ TEST(UpdateTimeStampData, Check6000seconds){
   validate_full_data_buffer(expected_timestamp, null_index);
 }
 
+TEST(UpdateTimeStampData, Check754secondsProduces1234Timestamp){
+  unsigned char expected_timestamp[] = {
+    0x00, 0x00, 0x42, 0x7f, 0x40, 0x00, 0x00, 0x00,
+    0x30, 0x49, 0x49, 0x49, 0x49, 0x46, 0x00, 0x00,
+    0x7f, 0x02, 0x04, 0x08, 0x04, 0x02, 0x7f, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+
+    0x49, 0x49, 0x49, 0x49, 0x49, 0x49, 0x36, 0x00,
+    0x3f, 0x20, 0x20, 0x78, 0x20, 0x20, 0x00, 0x00,
+    0x46, 0x49, 0x49, 0x49, 0x49, 0x30, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  };
+
+  UptimePresenter_UpdateUptime(754);
+  
+  size_t null_index = sizeof(uptime_font_bytes) + sizeof(expected_timestamp);
+  validate_full_data_buffer(expected_timestamp, null_index);
+}
 
 
 TEST_GROUP(AsciiCharToFontMapping){
