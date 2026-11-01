@@ -1,0 +1,9 @@
+#ifndef D_Timer_H
+#define D_Timer_H
+
+
+void Timer_Create(int* coutner);
+void Timer_Destroy(void);
+int* Timer_GetCounterPointer(void);
+
+#endif  /* Timer_H */

@@ -12,6 +12,8 @@ get_target_property(DISPLAY_SOURCES displayDriver SOURCES)
 get_target_property(DISPLAY_SOURCE_DIR displayDriver SOURCE_DIR)
 get_target_property(DISPLAY_INCLUDE_DIR displayDriver INCLUDE_DIRECTORIES)
 
+message("\n\n${APP_SOURCE_LIST}\n\n")
+
 add_executable(
   appTestRunner
   appTestRunner.cpp
