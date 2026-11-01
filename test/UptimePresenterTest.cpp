@@ -95,6 +95,13 @@ TEST_GROUP(UpdateTimeStampData){
   }
 };
 
+
+void validate_full_data_buffer(unsigned char* expected_timestamp, int null_byte_offset){
+  validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
+  validate_timestamp_block(expected_timestamp, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
+  check_rest_of_buffer_is_zero(UptimePresenter_GetData(), null_byte_offset);
+}
+
 TEST(UpdateTimeStampData, Check6000seconds){
   unsigned char expected_timestamp[] = {
     0x3e, 0x41, 0x41, 0x49, 0x41, 0x41, 0x3e, 0x00,
@@ -110,10 +117,8 @@ TEST(UpdateTimeStampData, Check6000seconds){
 
   UptimePresenter_UpdateUptime(6000);
   
-  validate_uptime_font_bytes(uptime_font_bytes, UptimePresenter_GetData(), sizeof(uptime_font_bytes)); 
-  validate_timestamp_block(expected_timestamp, UptimePresenter_GetData(), sizeof(uptime_font_bytes));
   size_t null_index = sizeof(uptime_font_bytes) + sizeof(expected_timestamp);
-  check_rest_of_buffer_is_zero(UptimePresenter_GetData(), null_index);
+  validate_full_data_buffer(expected_timestamp, null_index);
 }
 
 
