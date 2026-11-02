@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include "pico/time.h"
 
 static int* counter_ptr = NULL;
 
@@ -14,4 +15,9 @@ void Timer_Destroy(void){
 
 int* Timer_GetCounterPointer(void){
   return counter_ptr;
+}
+
+void Timer_Tick(void){
+  (*counter_ptr)++; 
+  sleep_ms(1000);
 }

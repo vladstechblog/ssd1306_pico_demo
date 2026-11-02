@@ -5,5 +5,6 @@
 void Timer_Create(int* coutner);
 void Timer_Destroy(void);
 int* Timer_GetCounterPointer(void);
+void Timer_Tick(void);
 
 #endif  /* Timer_H */
