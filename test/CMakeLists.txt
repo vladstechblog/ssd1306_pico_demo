@@ -31,6 +31,8 @@ target_include_directories(
 target_link_libraries(
   appTestRunner
   PUBLIC
+  UptimePresenter
+  Timer
   CppUTest
   CppUTestExt
 )
