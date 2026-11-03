@@ -1,5 +1,4 @@
 #include <CppUTest/CommandLineTestRunner.h>
-#include "AppTest.cpp"
 #include "UptimePresenterTest.cpp"
 #include "UptimeFormatTest.cpp"
 #include "TimerTest.cpp"
