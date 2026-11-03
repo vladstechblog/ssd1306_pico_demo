@@ -37,19 +37,20 @@ target_link_libraries(
 )
 
 add_executable(
-  appTestRunner
-  appTestRunner.cpp
+  componentTestRunner
+  componentTestRunner.cpp
 )
 
 target_include_directories(
-  appTestRunner
+  componentTestRunner
   PUBLIC
   include
+  "${APP_INCLUDE_DIR}"
   "${DISPLAY_INCLUDE_DIR}"
 )
 
 target_link_libraries(
-  appTestRunner
+  componentTestRunner
   PUBLIC
   UptimePresenter
   Timer
