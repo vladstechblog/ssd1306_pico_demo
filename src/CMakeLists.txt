@@ -6,9 +6,12 @@ add_library(Timer OBJECT Timer.c)
 target_include_directories(Timer PUBLIC include)
 target_link_libraries(Timer PUBLIC pico_time_headers)
 
+add_library(Util OBJECT Util.c)
+target_include_directories(Util PUBLIC include)
+
 add_library(App STATIC App.c)
 target_include_directories(App PUBLIC include)
-target_link_libraries(App PUBLIC hardware_i2c hardware_gpio displayDriver)
+target_link_libraries(App PUBLIC Util hardware_i2c hardware_gpio displayDriver)
 
 add_executable(demo main.c)
 target_include_directories(demo PUBLIC include)

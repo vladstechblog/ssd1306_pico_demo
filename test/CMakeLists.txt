@@ -52,6 +52,7 @@ target_include_directories(
 target_link_libraries(
   componentTestRunner
   PUBLIC
+  Util
   UptimePresenter
   Timer
   CppUTest
