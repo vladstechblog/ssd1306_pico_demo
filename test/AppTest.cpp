@@ -50,64 +50,63 @@ void SSD1306_clearDisplayMemory(void){
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
 
+
+void recordDisplayInitializationExpectations(void){
+  mock().expectOneCall("SSD1306_Create")
+    .withPointerParameter("i2c_address", fake_i2c_address);
+  mock().expectOneCall("SSD1306_defaultInitialization");
+  mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
+  mock().expectOneCall("SSD1306_clearDisplayMemory");
+}
+
+void recordI2CSetupExpectations(void){
+  mock().expectOneCall("i2c_init")
+    .withPointerParameter("i2c_address", fake_i2c_address)
+    .withUnsignedIntParameter("baudrate", fake_baudrate)
+    .andReturnValue(fake_baudrate);
+
+  mock().expectOneCall("gpio_set_function")
+    .withUnsignedIntParameter("pin_number", I2C_SCA_PIN)
+    .withIntParameter("pin_function", GPIO_FUNC_I2C);
+
+  mock().expectOneCall("gpio_set_function")
+    .withUnsignedIntParameter("pin_number", I2C_CLK_PIN)
+    .withIntParameter("pin_function", GPIO_FUNC_I2C);
+
+  mock().expectOneCall("gpio_pull_up")
+    .withUnsignedIntParameter("pin_number", I2C_SCA_PIN);
+
+  mock().expectOneCall("gpio_pull_up")
+    .withUnsignedIntParameter("pin_number", I2C_CLK_PIN);
+}
+
+
 TEST_GROUP(Display){
   
-  void recordDisplayInitializationExpectations(void){
-    mock().expectOneCall("SSD1306_Create")
-      .withPointerParameter("i2c_address", fake_i2c_address);
-    mock().expectOneCall("SSD1306_defaultInitialization");
-    mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
-    mock().expectOneCall("SSD1306_clearDisplayMemory");
-  }
-
-
   void setup(){}
+  
   void teardown(){
     mock().checkExpectations();
     mock().clear();
   }
 };
-
 
 TEST(Display, DisplayInitialization){
   recordDisplayInitializationExpectations();
   initialize_display(fake_i2c_address);
 }
 
+
 TEST_GROUP(AppI2CSetup){
  
-  void recordI2CSetupExpectations(void){
-    mock().expectOneCall("i2c_init")
-      .withPointerParameter("i2c_address", fake_i2c_address)
-      .withUnsignedIntParameter("baudrate", fake_baudrate)
-      .andReturnValue(fake_baudrate);
-
-    mock().expectOneCall("gpio_set_function")
-      .withUnsignedIntParameter("pin_number", I2C_SCA_PIN)
-      .withIntParameter("pin_function", GPIO_FUNC_I2C);
-
-    mock().expectOneCall("gpio_set_function")
-      .withUnsignedIntParameter("pin_number", I2C_CLK_PIN)
-      .withIntParameter("pin_function", GPIO_FUNC_I2C);
-
-    mock().expectOneCall("gpio_pull_up")
-      .withUnsignedIntParameter("pin_number", I2C_SCA_PIN);
-
-    mock().expectOneCall("gpio_pull_up")
-      .withUnsignedIntParameter("pin_number", I2C_CLK_PIN);
-  }
-
-  void setup(){
-    //TODO
-  }
-
+  void setup(){}
+  
   void teardown(){
     mock().checkExpectations();
     mock().clear();
   }
 
 };
-
 
 TEST(AppI2CSetup, initializei_default_I2C){
   recordI2CSetupExpectations();
