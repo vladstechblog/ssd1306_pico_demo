@@ -66,3 +66,19 @@ TEST(Tick, CallingTickIncrementsCounterByOne){
   Timer_Tick();
   LONGS_EQUAL(1, *(Timer_GetCounterPointer()));
 }
+
+TEST(Tick, AnotherTickIncrementTest){
+  counter = 99;
+  Timer_Tick();
+  LONGS_EQUAL(100, *(Timer_GetCounterPointer()));
+}
+
+TEST(Tick, HandlesMaxSecondsCorrecly){
+  counter = 5999;
+  Timer_Tick();
+  LONGS_EQUAL(0, *(Timer_GetCounterPointer()));
+}
+
+
+
+

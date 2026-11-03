@@ -18,6 +18,10 @@ int* Timer_GetCounterPointer(void){
 }
 
 void Timer_Tick(void){
-  (*counter_ptr)++; 
+  if (*counter_ptr == MAX_SECONDS)
+    *counter_ptr = 0;
+  else
+    (*counter_ptr)++; 
+  
   sleep_ms(1000);
 }
