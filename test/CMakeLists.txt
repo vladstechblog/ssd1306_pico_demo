@@ -18,6 +18,7 @@ add_executable(
   integrationTestRunner
   integrationTestRunner.cpp
   UptimePresenter_Spy.c
+  ${APP_SOURCE_LIST}
 )
 
 target_include_directories(
@@ -38,14 +39,12 @@ target_link_libraries(
 add_executable(
   appTestRunner
   appTestRunner.cpp
-  ${APP_SOURCE_LIST}
 )
 
 target_include_directories(
   appTestRunner
   PUBLIC
   include
-  "${APP_INCLUDE_DIR}"
   "${DISPLAY_INCLUDE_DIR}"
 )
 
