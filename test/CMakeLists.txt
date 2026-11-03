@@ -17,7 +17,6 @@ message("\n\n${APP_SOURCE_LIST}\n\n")
 add_executable(
   integrationTestRunner
   integrationTestRunner.cpp
-  UptimePresenter_Spy.c
   ${APP_SOURCE_LIST}
 )
 
@@ -32,6 +31,7 @@ target_include_directories(
 target_link_libraries(
   integrationTestRunner
   PUBLIC
+  Timer
   CppUTest
   CppUTestExt
 )

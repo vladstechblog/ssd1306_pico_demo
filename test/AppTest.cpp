@@ -4,6 +4,7 @@ extern "C"
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
 #include "App.h"
+#include "Timer.h"
 #include <stdbool.h>
 
 uint i2c_init(i2c_inst_t* i2c_address, uint baudrate){
@@ -43,6 +44,25 @@ void SSD1306_clearDisplayMemory(void){
   mock_c()->actualCall("SSD1306_clearDisplayMemory");
 }
 
+void UptimePresenter_Create(void){
+  mock_c()->actualCall("UptimePresenter_Create");
+}
+
+void UptimePresenter_UpdateUptime(uint16_t timestamp){
+  mock_c()->actualCall("UptimePresenter_UpdateUptime")
+    ->withUnsignedIntParameters("timestamp", timestamp);
+}
+
+void sleep_ms(uint32_t ms){
+  mock_c()->actualCall("sleep_ms")
+    ->withUnsignedIntParameters("ms", ms);
+}
+
+bool AlwaysTrue(void){
+  return mock_c()->actualCall("AlwaysTrue")
+    ->boolReturnValue();
+}
+
 
 
 } //end of extern "C"
@@ -62,8 +82,8 @@ void recordDisplayInitializationExpectations(void){
 void recordI2CSetupExpectations(void){
   mock().expectOneCall("i2c_init")
     .withPointerParameter("i2c_address", fake_i2c_address)
-    .withUnsignedIntParameter("baudrate", fake_baudrate)
-    .andReturnValue(fake_baudrate);
+    .withUnsignedIntParameter("baudrate", BAUDRATE)
+    .andReturnValue(BAUDRATE);
 
   mock().expectOneCall("gpio_set_function")
     .withUnsignedIntParameter("pin_number", I2C_SCA_PIN)
@@ -78,6 +98,30 @@ void recordI2CSetupExpectations(void){
 
   mock().expectOneCall("gpio_pull_up")
     .withUnsignedIntParameter("pin_number", I2C_CLK_PIN);
+}
+
+void record_UptimePresenter_Create_expectation(void){
+  mock().expectOneCall("UptimePresenter_Create");
+}
+
+void record_UptimePresenter_UpdateUptime_expecatation(){
+  mock().expectOneCall("UptimePresenter_UpdateUptime")
+    .withUnsignedIntParameter("timestamp", 1);
+}
+
+void record_sleep_one_second_expectations(void){
+  mock().expectOneCall("sleep_ms")
+    .withUnsignedIntParameter("ms", 1000);
+}
+
+void record_AlwaysTrue_returs_true(){
+  mock().expectOneCall("AlwaysTrue")
+    .andReturnValue(true);
+}
+
+void record_AlwaysTrue_returs_false(){
+  mock().expectOneCall("AlwaysTrue")
+    .andReturnValue(false);
 }
 
 
@@ -105,10 +149,34 @@ TEST_GROUP(AppI2CSetup){
     mock().checkExpectations();
     mock().clear();
   }
-
 };
 
 TEST(AppI2CSetup, initializei_default_I2C){
   recordI2CSetupExpectations();
-  i2c_setup(fake_i2c_address, fake_baudrate, I2C_SCA_PIN, I2C_CLK_PIN);
+  i2c_setup(fake_i2c_address, BAUDRATE, I2C_SCA_PIN, I2C_CLK_PIN);
+}
+
+
+TEST_GROUP(Integration){
+
+  void setup(){
+  }
+
+  void teardown(){
+    mock().checkExpectations();
+    mock().clear();
+  }
+};
+
+TEST(Integration, app_main_test){
+  recordI2CSetupExpectations();
+  recordDisplayInitializationExpectations();
+  record_UptimePresenter_Create_expectation();
+  record_AlwaysTrue_returs_true();
+  record_sleep_one_second_expectations();
+  record_UptimePresenter_UpdateUptime_expecatation();
+  record_AlwaysTrue_returs_false();
+
+  app_main();
+  LONGS_EQUAL(1, *Timer_GetCounterPointer());
 }
