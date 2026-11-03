@@ -13,9 +13,10 @@ void UptimePresenter_Spy_Destroy(void){
   timestmap = 0;
 }
 
-
-
-
 uint16_t UptimePresenter_Spy_GetTimeStamp(void){
   return timestmap;
+}
+
+void UptimePresenter_UpdateUptime(uint16_t new_timestamp){
+  timestmap = new_timestamp;
 }

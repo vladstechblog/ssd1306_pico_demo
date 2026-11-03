@@ -15,6 +15,27 @@ get_target_property(DISPLAY_INCLUDE_DIR displayDriver INCLUDE_DIRECTORIES)
 message("\n\n${APP_SOURCE_LIST}\n\n")
 
 add_executable(
+  integrationTestRunner
+  integrationTestRunner.cpp
+  UptimePresenter_Spy.c
+)
+
+target_include_directories(
+  integrationTestRunner 
+  PUBLIC
+  include
+  "${APP_INCLUDE_DIR}"
+  "${DISPLAY_INCLUDE_DIR}"
+)
+
+target_link_libraries(
+  integrationTestRunner
+  PUBLIC
+  CppUTest
+  CppUTestExt
+)
+
+add_executable(
   appTestRunner
   appTestRunner.cpp
   ${APP_SOURCE_LIST}
