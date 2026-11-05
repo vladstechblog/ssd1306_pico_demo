@@ -35,5 +35,6 @@ void app_main(void){
   while(AlwaysTrue()){
     Timer_Tick();
     UptimePresenter_UpdateUptime(counter);
+    SSD1306_sendDataBuffer(UptimePresenter_GetData(), DATA_BUFFER_SIZE);
   }
 }

@@ -5,7 +5,12 @@ extern "C"
 #include "hardware/gpio.h"
 #include "App.h"
 #include "Timer.h"
+#include "SSD1306.h"
+#include "UptimePresenter.h"
 #include <stdbool.h>
+
+int fake_return_value = 0xaabb;
+uint8_t* fake_data_ptr = (uint8_t*) 0xffeeddcc;
 
 uint i2c_init(i2c_inst_t* i2c_address, uint baudrate){
   return mock_c()->actualCall("i2c_init")
@@ -30,22 +35,35 @@ void SSD1306_Create(i2c_inst_t* i2c_address){
     ->withPointerParameters("i2c_address", i2c_address);
 }
 
-
-void SSD1306_defaultInitialization(void){
-  mock_c()->actualCall("SSD1306_defaultInitialization");
+int SSD1306_defaultInitialization(void){
+  return mock_c()->actualCall("SSD1306_defaultInitialization")
+    ->intReturnValue();
 }
 
-
-void SSD1306_setAddressModeToHorizontal(void){
-  mock_c()->actualCall("SSD1306_setAddressModeToHorizontal");
+int SSD1306_setAddressModeToHorizontal(void){
+  return mock_c()->actualCall("SSD1306_setAddressModeToHorizontal")
+    ->intReturnValue();
 }
 
-void SSD1306_clearDisplayMemory(void){
-  mock_c()->actualCall("SSD1306_clearDisplayMemory");
+int SSD1306_clearDisplayMemory(void){
+  return mock_c()->actualCall("SSD1306_clearDisplayMemory")
+    ->intReturnValue();
+}
+
+int SSD1306_sendDataBuffer(data_t* data_to_send, unsigned int data_size){
+  return mock_c()->actualCall("SSD1306_sendDataBuffer")
+    ->withPointerParameters("data_to_send", data_to_send)
+    ->withUnsignedIntParameters("data_size", data_size)
+    ->intReturnValue();
 }
 
 void UptimePresenter_Create(void){
   mock_c()->actualCall("UptimePresenter_Create");
+}
+
+uint8_t* UptimePresenter_GetData(void){
+  return (uint8_t*) mock_c()->actualCall("UptimePresenter_GetData")
+  ->pointerReturnValue();
 }
 
 void UptimePresenter_UpdateUptime(uint16_t timestamp){
@@ -74,9 +92,15 @@ bool AlwaysTrue(void){
 void recordDisplayInitializationExpectations(void){
   mock().expectOneCall("SSD1306_Create")
     .withPointerParameter("i2c_address", fake_i2c_address);
-  mock().expectOneCall("SSD1306_defaultInitialization");
-  mock().expectOneCall("SSD1306_setAddressModeToHorizontal");
-  mock().expectOneCall("SSD1306_clearDisplayMemory");
+  
+  mock().expectOneCall("SSD1306_defaultInitialization")
+    .andReturnValue(fake_return_value);
+  
+  mock().expectOneCall("SSD1306_setAddressModeToHorizontal")
+    .andReturnValue(fake_return_value);
+
+  mock().expectOneCall("SSD1306_clearDisplayMemory")
+    .andReturnValue(fake_return_value);
 }
 
 void recordI2CSetupExpectations(void){
@@ -104,9 +128,21 @@ void record_UptimePresenter_Create_expectation(void){
   mock().expectOneCall("UptimePresenter_Create");
 }
 
+void record_UptimePresenter_GetData_expectation(void){
+  mock().expectOneCall("UptimePresenter_GetData")
+    .andReturnValue(fake_data_ptr);
+}
+
 void record_UptimePresenter_UpdateUptime_expecatation(){
   mock().expectOneCall("UptimePresenter_UpdateUptime")
     .withUnsignedIntParameter("timestamp", 1);
+}
+
+void record_SSD1306_sendDataBuffer_expectation(data_t* data_to_send, unsigned int data_size){
+  mock().expectOneCall("SSD1306_sendDataBuffer")
+    .withPointerParameter("data_to_send", data_to_send)
+    .withUnsignedIntParameter("data_size", data_size)
+    .andReturnValue((int)(data_size * 2));
 }
 
 void record_sleep_one_second_expectations(void){
@@ -175,6 +211,8 @@ TEST(Integration, app_main_test){
   record_AlwaysTrue_returs_true();
   record_sleep_one_second_expectations();
   record_UptimePresenter_UpdateUptime_expecatation();
+  record_UptimePresenter_GetData_expectation();
+  record_SSD1306_sendDataBuffer_expectation(fake_data_ptr, DATA_BUFFER_SIZE);
   record_AlwaysTrue_returs_false();
 
   app_main();
