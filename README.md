@@ -4,8 +4,8 @@ This is a demo project of doing test driven development (TDD)
 on a Raspberry Pi Pico boards with Pico C/C++ SDK and CppUTest harness.
 
 The [UptimePresenter](src/UptimePresenter.c) is responsible for formatting
-the display data, including convertion of ASCII characteers into a display font
-(not something a driver should be doing :P).
+the display data, including convertion of ASCII characteers into a display
+[font](src/include/ssd1306_font.h) (not something a driver should be doing :P).
 
 
 ## I2C Pinout and BaudRate
