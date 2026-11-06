@@ -13,7 +13,7 @@ void sleep_ms(uint32_t ms){
 }
 
 #include "CppUTest/TestHarness.h"
-#include "CppUtestExt/MockSupport.h"
+#include "CppUTestExt/MockSupport.h"
 
 TEST_GROUP(Timer)
 {
