@@ -1,5 +1,5 @@
-#ifndef D_Timer_H
-#define D_Timer_H
+#ifndef Timer_H
+#define Timer_H
 
 #define MAX_SECONDS 5999
 

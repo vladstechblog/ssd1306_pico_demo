@@ -1,5 +1,5 @@
-#ifndef D_UptimePresenter_H
-#define D_UptimePresenter_H
+#ifndef UptimePresenter_H
+#define UptimePresenter_H
 
 #define DATA_BUFFER_SIZE ((unsigned int) ((128 * 64) / 8))
 #define UPTIME_MAX 6000 //10 hours
@@ -14,4 +14,4 @@ uint8_t* UptimePresenter_MapAsciiToFont(char);
 void UptimePresenter_FormatTimestamp(uint16_t, char*);
 void UptimePresenter_UpdateUptime(uint16_t);
 
-#endif  /* D_UptimePresenter_H */
+#endif  /* UptimePresenter_H */

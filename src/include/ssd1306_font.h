@@ -49,4 +49,4 @@ static uint8_t font[][FONT_CHAR_SIZE] = {
 { 0x06, 0x09, 0x09, 0x09, 0x09, 0x09, 0x7f, 0x00 },  //9
 };
 
-#endif
+#endif /* SSD1306_FONT_H */

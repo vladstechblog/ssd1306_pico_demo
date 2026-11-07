@@ -1,6 +1,6 @@
-#ifndef D_Util_H
-#define D_Util_H
+#ifndef Util_H
+#define Util_H
 
 bool AlwaysTrue(void);
 
-#endif  /* FakeUtil_H */
+#endif  /* Util_H */
