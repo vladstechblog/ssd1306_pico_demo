@@ -24,16 +24,16 @@ void initialize_display(i2c_inst_t* i2c_address){
 }
 
 void app_main(void){
-  int counter = 0;
+  int uptime_in_seconds = 0;
   
   i2c_setup(i2c_default, BAUDRATE, I2C_SCA_PIN, I2C_CLK_PIN);
   initialize_display(i2c_default);
   UptimePresenter_Create();
-  Timer_Create(&counter);
+  Timer_Create(&uptime_in_seconds);
  
   while(AlwaysTrue()){
     Timer_Tick();
-    UptimePresenter_UpdateUptime(counter);
+    UptimePresenter_UpdateUptime(uptime_in_seconds);
     SSD1306_sendDataBuffer(UptimePresenter_GetData(), DATA_BUFFER_SIZE);
   }
 }
