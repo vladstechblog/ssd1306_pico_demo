@@ -21,8 +21,7 @@ unsigned char* UptimePresenter_GetData(void){
   return ssd1306_display_data;
 }
 
-
-static int  get_font_index(char char_to_map){
+static int get_font_index(char char_to_map){
   int font_index = 0;
   int font_base_offset = 0x40;
   int ascii_number_offset = 0x2F;
@@ -36,7 +35,6 @@ static int  get_font_index(char char_to_map){
 
   if(char_to_map >= 'a' && char_to_map <= 'z')
      font_index = char_to_map - ascii_lower_case_offset;
- 
 
   return font_index;
 }
@@ -44,7 +42,6 @@ static int  get_font_index(char char_to_map){
 uint8_t* UptimePresenter_MapAsciiToFont(char char_to_map){
   return font[get_font_index(char_to_map)];
 }
-
 
 void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fill){
   if (uptime_seconds == UPTIME_MAX)
@@ -56,10 +53,8 @@ void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fi
   int minutes = uptime_seconds / 60;
   int seconds = uptime_seconds % 60;
   
-
   snprintf(buffer_to_fill, TIMESTAMP_LENGTH, "%02dm %02ds", minutes, seconds);
 }
-
 
 void static write_uptime_header(void){
   uint8_t uptime_header[] = "UPTIME";
@@ -83,9 +78,9 @@ void UptimePresenter_UpdateUptime(uint16_t uptime_seconds){
   
   int display_data_timestamp_offset = DISPLAY_LINE_BYTES;
 
-  for(int i = 0; i < TIMESTAMP_LENGTH; i++){
-    char* font_pointer = UptimePresenter_MapAsciiToFont(timestamp_buffer[i]);
-    int display_data_index = display_data_timestamp_offset + (i * FONT_CHAR_SIZE);
-    memcpy(&ssd1306_display_data[display_data_index], font_pointer, FONT_CHAR_SIZE); 
+  for(int timestamp_index = 0; timestamp_index < TIMESTAMP_LENGTH; timestamp_index++){
+    char* font_letter_pointer = UptimePresenter_MapAsciiToFont(timestamp_buffer[timestamp_index]);
+    int next_font_item_index = display_data_timestamp_offset + (timestamp_index * FONT_CHAR_SIZE);
+    memcpy(&ssd1306_display_data[next_font_item_index], font_letter_pointer, FONT_CHAR_SIZE); 
   }
 }

@@ -1,7 +1,7 @@
 extern "C"
 {
 #include "UptimePresenter_Spy.h"
-}
+} // end of extern "C"
 
 #include "CppUTest/TestHarness.h"
 
@@ -28,7 +28,6 @@ TEST_GROUP(Spy){
     UptimePresenter_Spy_Destroy();
   }
 };
-
 
 TEST(Spy, UpdateUptimeUpdatesTimestamp){
   uint16_t expected = 1234;
