@@ -5,11 +5,11 @@
 #include "UptimePresenter.h"
 
 
-static unsigned char data_buffer[DATA_BUFFER_SIZE] = {0xff};
+static unsigned char ssd1306_display_data[DATA_BUFFER_SIZE] = {0xff};
 
 static void zero_out_data(void){
   for (int buffer_index = 0; buffer_index < DATA_BUFFER_SIZE; buffer_index++){
-    data_buffer[buffer_index] = 0;
+    ssd1306_display_data[buffer_index] = 0;
   }
 }
 
@@ -18,7 +18,7 @@ void UptimePresenter_Destroy(void){
 }
 
 unsigned char* UptimePresenter_GetData(void){
-  return data_buffer;
+  return ssd1306_display_data;
 }
 
 
@@ -61,29 +61,31 @@ void UptimePresenter_FormatTimestamp(uint16_t uptime_seconds, char* buffer_to_fi
 }
 
 
+void static write_uptime_header(void){
+  uint8_t uptime_header[] = "UPTIME";
+  
+  for(int uptime_header_index = 0; uptime_header_index < sizeof(uptime_header); uptime_header_index++){
+    char* font_letter_pointer = UptimePresenter_MapAsciiToFont(uptime_header[uptime_header_index]);
+    int next_font_item_index = uptime_header_index * FONT_CHAR_SIZE;
+
+    memcpy(&ssd1306_display_data[next_font_item_index], font_letter_pointer, FONT_CHAR_SIZE);
+  }
+}
+
 void UptimePresenter_Create(void){
   zero_out_data();
-
-  uint8_t uptime[] = "UPTIME";
-  size_t memset_limit = sizeof(uptime) * FONT_CHAR_SIZE;
-  
-  for(int char_index = 0; char_index < sizeof(uptime); char_index++){
-    char* font_letter_pointer = UptimePresenter_MapAsciiToFont(uptime[char_index]);
-    int data_buffer_index = char_index * FONT_CHAR_SIZE;
-
-    memcpy(data_buffer  + data_buffer_index, font_letter_pointer, FONT_CHAR_SIZE);
-  }
+  write_uptime_header();
 }
 
 void UptimePresenter_UpdateUptime(uint16_t uptime_seconds){
   char timestamp_buffer[TIMESTAMP_LENGTH];
   UptimePresenter_FormatTimestamp(uptime_seconds, timestamp_buffer);
   
-  int data_buffer_timestamp_offset = DISPLAY_LINE_BYTES;
+  int display_data_timestamp_offset = DISPLAY_LINE_BYTES;
 
   for(int i = 0; i < TIMESTAMP_LENGTH; i++){
     char* font_pointer = UptimePresenter_MapAsciiToFont(timestamp_buffer[i]);
-    int data_buffer_index = data_buffer_timestamp_offset + (i * FONT_CHAR_SIZE);
-    memcpy(&data_buffer[data_buffer_index], font_pointer, FONT_CHAR_SIZE); 
+    int display_data_index = display_data_timestamp_offset + (i * FONT_CHAR_SIZE);
+    memcpy(&ssd1306_display_data[display_data_index], font_pointer, FONT_CHAR_SIZE); 
   }
 }
