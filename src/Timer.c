@@ -12,7 +12,6 @@ void Timer_Destroy(void){
   counter_ptr = NULL;
 }
 
-
 int* Timer_GetCounterPointer(void){
   return counter_ptr;
 }
