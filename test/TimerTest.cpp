@@ -9,8 +9,7 @@ void sleep_ms(uint32_t ms){
     ->withUnsignedIntParameters("ms", 1000);
 }
 
-
-}
+} // end of extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/MockSupport.h"
@@ -40,6 +39,7 @@ TEST(Timer, CreatSetsCounterToZero){
   LONGS_EQUAL(0, *actual);
 }
 
+
 TEST_GROUP(Tick){ 
   
   void recordSleepMsExpectations(){
@@ -61,7 +61,6 @@ TEST_GROUP(Tick){
   }
 };
 
-
 TEST(Tick, CallingTickIncrementsCounterByOne){
   Timer_Tick();
   LONGS_EQUAL(1, *(Timer_GetCounterPointer()));
@@ -78,7 +77,3 @@ TEST(Tick, HandlesMaxSecondsCorrecly){
   Timer_Tick();
   LONGS_EQUAL(0, *(Timer_GetCounterPointer()));
 }
-
-
-
-
