@@ -8,6 +8,9 @@ the display data, including convertion of ASCII characteers into a display
 [font](src/include/ssd1306_font.h) (not something a driver should be doing :P).
 
 
+![uptime](src/uptime.jpeg)
+
+
 ## I2C Pinout and BaudRate
 
 see [App.h](src/include/App.h)
