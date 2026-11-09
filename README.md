@@ -16,7 +16,6 @@ the display data, including convertion of ASCII characteers into a display
 see [App.h](src/include/App.h)
 
 
-
 ## Building and Uploading
 
 - building the project for Pico 2W and uploading it to the board.
@@ -31,6 +30,9 @@ see [App.h](src/include/App.h)
 
 
 ## Building and Running Host Build Tests
+
+- **Note: projects assumes that a CppUTest git repo is located in `~/cpputest`**
+  see [include_local_cpputest_git_repo.cmake](test/include_local_cpputest_git_repo.cmake)
 
 - component tests
 
