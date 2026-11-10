@@ -23,7 +23,7 @@ see [App.h](src/include/App.h)
   ```shell
   git clone https://github.com/vladstechblog/ssd1306_pico_demo.git
   cd ssd1306_pico_demo
-  cmake -B build_p2w -DPICO_PLATFORM=rp2350 -DPICO_BOARD=pico2_2
+  cmake -B build_p2w -DPICO_PLATFORM=rp2350 -DPICO_BOARD=pico2_w
   cmake --build build_p2w
   picotool erase && picotool load -x build_p2w/src/demo.uf2
   ```
