@@ -13,5 +13,4 @@ FetchContent_Declare(
 )
 
 FetchContent_MakeAvailable(CppUTest)
-
 unset(FETCHCONTENT_TRY_FIND_PACKAGE)
